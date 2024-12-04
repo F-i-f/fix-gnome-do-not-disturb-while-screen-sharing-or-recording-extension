@@ -1,28 +1,30 @@
 import Gio from "@gi-ts/gio2";
 
 const showBannersSetting = "show-banners";
-const schemaId = "org.gnome.desktop.notifications";
+const notificationsSchemaId = "org.gnome.desktop.notifications";
 
 export class DoNotDisturbManager {
-  private _settings: Gio.Settings | null = null;
+  private _notificationsSettings: Gio.Settings | null = null;
 
-  private getSettings() {
-    if (!this._settings) {
-      this._settings = new Gio.Settings({ schema_id: schemaId });
+  private getNotificationsSettings() {
+    if (!this._notificationsSettings) {
+      this._notificationsSettings = new Gio.Settings({
+        schema_id: notificationsSchemaId,
+      });
     }
 
-    return this._settings;
+    return this._notificationsSettings;
   }
 
   turnDndOn() {
-    this.getSettings().set_boolean(showBannersSetting, false);
+    this.getNotificationsSettings().set_boolean(showBannersSetting, false);
   }
 
   turnDndOff() {
-    this.getSettings().set_boolean(showBannersSetting, true);
+    this.getNotificationsSettings().set_boolean(showBannersSetting, true);
   }
 
   dispose() {
-    this._settings = null;
+    this._notificationsSettings = null;
   }
 }
